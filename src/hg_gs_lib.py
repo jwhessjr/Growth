@@ -106,6 +106,7 @@ def get_inc_stmnt(company: str, apiKey: str) -> dict:
 
     return income_statement
 
+
 # Function to get the balance sheet and extract the required fields
 
 
@@ -176,7 +177,6 @@ def get_bal_sheet(company, apiKey):
     # balSht["totalLiabilities"] = liabilities
     balSht["total_stockholders_equity"] = stockholdersEquity
     return balSht
-
 
 
 # get ERP
