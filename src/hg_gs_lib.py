@@ -106,6 +106,78 @@ def get_inc_stmnt(company: str, apiKey: str) -> dict:
 
     return income_statement
 
+# Function to get the balance sheet and extract the required fields
+
+
+def get_bal_sheet(company, apiKey):
+    url = f"https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol={company}&apikey={apiKey}"
+
+    data = get_jsonparsed_data(url)
+    balSheet = data.get("quarterlyReports", [])
+    balSht = {}
+    cashAndEquivalents = [
+        safe_float(balSheet[0]["cashAndShortTermInvestments"]),
+        safe_float(balSheet[4]["cashAndShortTermInvestments"]),
+        safe_float(balSheet[8]["cashAndShortTermInvestments"]),
+        safe_float(balSheet[12]["cashAndShortTermInvestments"]),
+        safe_float(balSheet[16]["cashAndShortTermInvestments"]),
+    ]
+    currentAssets = [
+        safe_float(balSheet[0]["totalCurrentAssets"]),
+        safe_float(balSheet[4]["totalCurrentAssets"]),
+        safe_float(balSheet[8]["totalCurrentAssets"]),
+        safe_float(balSheet[12]["totalCurrentAssets"]),
+        safe_float(balSheet[16]["totalCurrentAssets"]),
+    ]
+
+    stockholdersEquity = [
+        safe_float(balSheet[0]["totalShareholderEquity"]),
+        safe_float(balSheet[4]["totalShareholderEquity"]),
+        safe_float(balSheet[8]["totalShareholderEquity"]),
+        safe_float(balSheet[12]["totalShareholderEquity"]),
+        safe_float(balSheet[16]["totalShareholderEquity"]),
+    ]
+    currentLiabilities = [
+        safe_float(balSheet[0]["totalCurrentLiabilities"]),
+        safe_float(balSheet[4]["totalCurrentLiabilities"]),
+        safe_float(balSheet[8]["totalCurrentLiabilities"]),
+        safe_float(balSheet[12]["totalCurrentLiabilities"]),
+        safe_float(balSheet[16]["totalCurrentLiabilities"]),
+    ]
+    currentLongDebt = [
+        safe_float(balSheet[0]["currentLongTermDebt"]),
+        safe_float(balSheet[4]["currentLongTermDebt"]),
+        safe_float(balSheet[8]["currentLongTermDebt"]),
+        safe_float(balSheet[12]["currentLongTermDebt"]),
+        safe_float(balSheet[16]["currentLongTermDebt"]),
+    ]
+    shortTermDebt = [
+        safe_float(balSheet[0]["shortTermDebt"]),
+        safe_float(balSheet[4]["shortTermDebt"]),
+        safe_float(balSheet[8]["shortTermDebt"]),
+        safe_float(balSheet[12]["shortTermDebt"]),
+        safe_float(balSheet[16]["shortTermDebt"]),
+    ]
+    longTermDebt = [
+        safe_float(balSheet[0]["longTermDebt"]),
+        safe_float(balSheet[4]["longTermDebt"]),
+        safe_float(balSheet[8]["longTermDebt"]),
+        safe_float(balSheet[12]["longTermDebt"]),
+        safe_float(balSheet[16]["longTermDebt"]),
+    ]
+    balSht["cash_and_equivalents"] = cashAndEquivalents
+    balSht["total_current_assets"] = currentAssets
+    # balSht["totalAssets"] = totalAssets
+    # balSht["accountsPayable"] = accountsPayable
+    balSht["current_long_debt"] = currentLongDebt
+    balSht["short_term_debt"] = shortTermDebt
+    balSht["long_term_debt"] = longTermDebt
+    balSht["total_current_liabilities"] = currentLiabilities
+    # balSht["totalLiabilities"] = liabilities
+    balSht["total_stockholders_equity"] = stockholdersEquity
+    return balSht
+
+
 
 # get ERP
 def get_erp():
