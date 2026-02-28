@@ -74,7 +74,7 @@ def get_inc_stmnt(company: str, apiKey: str) -> dict:
         raise ValueError(f"No quarterly reports found for {company}")
 
     # We’ll aggregate at most 5 years (20 quarters).
-    max_quarters = min(len(quarterly_reports), 20)
+    max_quarters = min(len(quarterly_reports), 40)
     yearly_data = []
 
     for i in range(0, max_quarters, 4):  # step by four quarters
